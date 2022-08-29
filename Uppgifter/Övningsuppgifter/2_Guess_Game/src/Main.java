@@ -1,4 +1,3 @@
-import java.util.Iterator;
 import java.util.Scanner;
 
 public class Main {
@@ -10,6 +9,15 @@ public class Main {
 		Scanner scan = new Scanner(System.in);
 
 		randomNum = (int) Math.floor((Math.random()*899)+100);
+		
+		String temp = "";
+		for (int i = 0; i < 3; i++) {
+			temp += String.valueOf( (int)Math.floor(Math.random()*10));
+		}
+		randomNum = Integer.parseInt(temp);
+		
+		System.out.println(randomNum);
+		
 		//System.out.println("Number is: " + randomNum);
 		System.out.println("Please type a random number!");
 
@@ -31,6 +39,7 @@ public class Main {
 				System.out.println("Invalid number, please guess a number between 100 and 999.");
 			}
 		}
+		scan.close();
 	}
 
 	public static boolean checkNumValid(int inputNum) {
