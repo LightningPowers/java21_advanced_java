@@ -23,12 +23,12 @@ public class Main {
 			String restartDecision = null;
 			while (isGameOver) {
 				System.out.println("Game over! Do you wish to restart? (Yes/No)");
-				restartDecision = scan.nextLine();
-				if (restartDecision.equals("Yes")) {
+				restartDecision = scan.nextLine().toUpperCase();
+				if (restartDecision.equals("YES")) {
 					br.resetGame();
 					System.out.println("Game has been reset.");
 					isGameOver = false;
-				} else if (restartDecision.equals("No")) {
+				} else if (restartDecision.equals("NO")) {
 					System.out.println("Game session has been terminated.");
 					i = 200;
 					isGameOver = false;
@@ -38,7 +38,7 @@ public class Main {
 				}
 			}
 
-			//Continues to run game as long as the player hasn't said "No" in restart phase
+			// Continues to run game as long as the player hasn't said "No" in restart phase
 			if (!isGameTerminated) {
 				// Selects which player starts and whose turn it is
 				if (firstPlayer.equals("Player1")) {
@@ -59,16 +59,24 @@ public class Main {
 				for (int j = 0; j < 3; j++) {
 					System.out.println(playerName + ", please type a postion.");
 					String attemptedMove = scan.nextLine();
-					boolean canMove = br.checkMove(attemptedMove);
 
-					// Checks if move is valid
-					if (canMove) {
-						playerMove = attemptedMove;
-						br.RenderBoard(playerMove, playerName);
-						j = 3;
-					} else {
-						System.out.println("Invalid move, that tile has already been taken. Try again!");
+					// First check for valid input
+					boolean isValidMove = gl.checkValidMove(attemptedMove);
+					if (isValidMove) {
+
+						// Then if move is possible
+						boolean canMove = br.checkMove(attemptedMove);
+
+						// Checks if attempted move to tile is possible (not taken)
+						if (canMove) {
+							playerMove = attemptedMove;
+							br.RenderBoard(playerMove, playerName);
+							j = 3;
+						} else {
+							System.out.println("Cannot perform move, that tile has already been taken. Try again!");
+						}
 					}
+
 				}
 			}
 		}

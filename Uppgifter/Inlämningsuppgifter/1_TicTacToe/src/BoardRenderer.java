@@ -3,7 +3,7 @@ import java.util.ArrayList;
 public class BoardRenderer {
 
 	static String neutral = "-", player1 = "X", player2 = "O";
-	boolean boardStatus = false;
+	boolean boardStatus = false;// Used for seeing if game is over
 
 	ArrayList<String> row0 = new ArrayList<String>();
 	ArrayList<String> row1 = new ArrayList<String>();
@@ -123,6 +123,11 @@ public class BoardRenderer {
 			}
 		}
 
+		// Check if there is a tie/draw
+		if(!boardStatus) {
+			boardStatus = checkBoardEmpty();
+		}
+		
 		if (winningPlayer == 1) {
 			System.out.println("Player1 wins!");
 		} else if (winningPlayer == 2) {
@@ -158,13 +163,16 @@ public class BoardRenderer {
 	private int translateLetter(String letter) {
 		int convertedNum = 0;
 
-		if (letter.equals("A") || letter.equals("a")) {
+		// make letter to uppercase
+		String convertedLetter = letter.toUpperCase();
+
+		if (convertedLetter.equals("A")) {
 			convertedNum = 1;
-		} else if (letter.equals("B") || letter.equals("b")) {
+		} else if (convertedLetter.equals("B")) {
 			convertedNum = 2;
-		} else if (letter.equals("C") || letter.equals("c")) {
+		} else if (convertedLetter.equals("C")) {
 			convertedNum = 3;
-		} else if (letter.equals("D") || letter.equals("d")) {
+		} else if (convertedLetter.equals("D")) {
 			convertedNum = 4;
 		}
 
@@ -205,6 +213,7 @@ public class BoardRenderer {
 
 	}
 
+	// Cleans the board
 	public void resetGame() {
 		boolean isFirst = true;// Used to skip first row
 		for (ArrayList<String> arrayList : allArrayLists) {
@@ -224,6 +233,31 @@ public class BoardRenderer {
 		for (int i = 0; i < 4; i++) {
 			arrayList.add(neutral);
 		}
+	}
+
+	// Checks each row and tile that there is not a '-'
+	private boolean checkBoardEmpty() {
+		boolean isFirst = true;// Used to skip first row
+		int emptyTiles = 0;
+		boolean boardEmpty = false;
+		for (ArrayList<String> arrayList : allArrayLists) {
+			if (!isFirst) {
+				for (int i = 1; i < 5; i++) {
+					String tileValue = arrayList.get(i);
+					if (tileValue.equals(neutral)) {
+						emptyTiles++;
+					}
+				}
+			} else {
+				isFirst = false;
+			}
+		}
+		if (emptyTiles == 0) {
+			boardEmpty = true;
+			System.out.println("Board is empty!");
+		}
+
+		return boardEmpty;
 	}
 
 }
